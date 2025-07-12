@@ -1,46 +1,48 @@
 package com.agustincollueque.portfolio.service;
 
-import com.agustincollueque.portfolio.exception.TrabajoNotFoundException;
 import com.agustincollueque.portfolio.model.Trabajo;
 import com.agustincollueque.portfolio.repository.TrabajoRepository;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional
 @Service
-public class TrabajoService implements ITrabajoService{
-    @Autowired
-    TrabajoRepository trabRepo;
-    
+@RequiredArgsConstructor
+public class TrabajoService implements ITrabajoService {
+
+    private final TrabajoRepository trabRepo;
+
+    @Transactional
     @Override
-    public void crearTrabajo(Trabajo trab) {
-        trabRepo.save(trab);
+    public Trabajo crearTrabajo(Trabajo trab) {
+        return trabRepo.save(trab);
     }
 
+    @Transactional
     @Override
     public void eliminarTrabajo(Long id) {
         trabRepo.deleteById(id);
     }
 
+    @Transactional
     @Override
-    public Trabajo modificarTrabajo(Trabajo trab) {
+    public void modificarTrabajo(Trabajo trab) {
         if (trabRepo.existsById(trab.getIdTrab())) {
-            return trabRepo.save(trab);
-        } else {
-            throw new TrabajoNotFoundException("¡El trabajo no existe! No se pudo modificar.");
+            throw new EntityNotFoundException("¡El trabajo no existe! No se pudo modificar.");
         }
+        trabRepo.save(trab);
     }
 
     @Override
     public Trabajo obtenerTrabajo(Long id) {
-        return trabRepo.findById(id).orElseThrow(() -> new TrabajoNotFoundException("¡El trabajo no existe!"));
+        return trabRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("¡El trabajo no existe!"));
     }
 
     @Override
     public List<Trabajo> obtenerTrabajos() {
         return trabRepo.findAll();
     }
-    
+
 }

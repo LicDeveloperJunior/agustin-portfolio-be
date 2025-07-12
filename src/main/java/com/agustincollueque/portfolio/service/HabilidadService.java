@@ -1,51 +1,43 @@
 package com.agustincollueque.portfolio.service;
 
-import com.agustincollueque.portfolio.exception.HabilidadNotFoundException;
 import com.agustincollueque.portfolio.model.Habilidad;
 import com.agustincollueque.portfolio.repository.HabilidadRepository;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional
+@RequiredArgsConstructor
 public class HabilidadService implements IHabilidadService {
 
-    @Autowired
-    HabilidadRepository habRepo;
-    @Autowired
-    UsuarioService usuServ;
+    private final HabilidadRepository habRepo;
 
+    @Transactional
     @Override
-    public void crearHabilidad(Habilidad hab) {
-        habRepo.save(hab);
+    public Habilidad crearHabilidad(Habilidad hab) {
+        return habRepo.save(hab);
     }
 
-    @Override
-    public void crearHabilidad(Habilidad hab, Long idUsuario) {
-        if (usuServ.agregarHabilidad(idUsuario, hab)) {
-            habRepo.save(hab);
-        }
-    }
-
+    @Transactional
     @Override
     public void eliminarHabilidad(Long id) {
         habRepo.deleteById(id);
     }
 
+    @Transactional
     @Override
-    public Habilidad modificarHabilidad(Habilidad hab) {
-        if (habRepo.existsById(hab.getIdHab())) {
-            return habRepo.save(hab);
-        } else {
-            throw new HabilidadNotFoundException("¡La habilidad no existe! No se puede modificar.");
+    public void modificarHabilidad(Habilidad hab) {
+        if (!habRepo.existsById(hab.getIdHab())) {
+            throw new EntityNotFoundException("¡La habilidad no existe! No se puede modificar.");
         }
+        habRepo.save(hab);
     }
 
     @Override
     public Habilidad obtenerHabilidad(Long id) {
-        return habRepo.findById(id).orElseThrow(() -> new HabilidadNotFoundException("¡La habilidad no existe!"));
+        return habRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("¡La habilidad no existe!"));
     }
 
     @Override

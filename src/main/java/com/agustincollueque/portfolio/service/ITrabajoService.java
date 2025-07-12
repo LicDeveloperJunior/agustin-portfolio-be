@@ -4,9 +4,9 @@ import com.agustincollueque.portfolio.model.Trabajo;
 import java.util.List;
 
 public interface ITrabajoService {
-    public void crearTrabajo(Trabajo trab);
-    public void eliminarTrabajo(Long id);
-    public Trabajo modificarTrabajo(Trabajo trab);
-    public Trabajo obtenerTrabajo(Long id);
-    public List<Trabajo> obtenerTrabajos();
+    Trabajo crearTrabajo(Trabajo trab);
+    void eliminarTrabajo(Long id);
+    void modificarTrabajo(Trabajo trab);
+    Trabajo obtenerTrabajo(Long id);
+    List<Trabajo> obtenerTrabajos();
 }

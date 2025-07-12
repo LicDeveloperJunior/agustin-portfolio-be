@@ -4,9 +4,9 @@ import com.agustincollueque.portfolio.model.Formacion;
 import java.util.List;
 
 public interface IFormacionService {
-    public void crearFormacion(Formacion form);
-    public void eliminarFormacion(Long id);
-    public Formacion modificarFormacion(Formacion form);
-    public Formacion obtenerFormacion(Long id);
-    public List<Formacion>obtenerFormaciones();
+    Formacion crearFormacion(Formacion form);
+    void eliminarFormacion(Long id);
+    void modificarFormacion(Formacion form);
+    Formacion obtenerFormacion(Long id);
+    List<Formacion>obtenerFormaciones();
 }

@@ -3,7 +3,7 @@ package com.agustincollueque.portfolio.controller;
 import com.agustincollueque.portfolio.model.Trabajo;
 import com.agustincollueque.portfolio.service.ITrabajoService;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/trabajos")
+@RequiredArgsConstructor
 public class TrabajoController {
 
-    @Autowired
-    private ITrabajoService servTrab;
+    private final ITrabajoService servTrab;
 
     @GetMapping("/")
     public List<Trabajo> obtenerTrabajos() {
