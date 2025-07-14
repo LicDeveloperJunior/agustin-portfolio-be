@@ -1,6 +1,7 @@
 package com.agustincollueque.portfolio.controller;
 
 import com.agustincollueque.portfolio.model.Formacion;
+import com.agustincollueque.portfolio.security.SecurityUtils;
 import com.agustincollueque.portfolio.service.IFormacionService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -8,38 +9,42 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/formacion")
+@RequestMapping("/formaciones")
 @RequiredArgsConstructor
 public class FormacionController {
 
     private final IFormacionService servForm;
+    private final SecurityUtils securityUtils;
 
-    @GetMapping("/")
+    @GetMapping
     public List<Formacion> obtenerFormaciones() {
-        return servForm.obtenerFormaciones();
+        return servForm.obtenerFormaciones(securityUtils.getUserId());
     }
 
     @GetMapping("/{id}")
+    @ResponseBody
     public Formacion obtenerFormacion(@PathVariable("id") Long id) {
         return servForm.obtenerFormacion(id);
     }
 
-    @PostMapping("/agregar")
-    public void agregarFormacion(@RequestBody Formacion form) {
-        servForm.crearFormacion(form);
+    @PostMapping
+    public void crearFormacion(@RequestBody Formacion form) {
+        servForm.crearFormacion(securityUtils.getUser(), form);
     }
 
-    @PostMapping("/editar")
-    public void editarFormacion(@RequestBody Formacion form) {
-        servForm.modificarFormacion(form);
+    @PutMapping("/{id}")
+    public void editarFormacion(@PathVariable Long id, @RequestBody Formacion form) {
+        servForm.modificarFormacion(id, form);
     }
 
-    @DeleteMapping("/eliminar/{id}")
+    @DeleteMapping("/{id}")
     public void eliminarFormacion(@PathVariable("id") Long id) {
         servForm.eliminarFormacion(id);
     }

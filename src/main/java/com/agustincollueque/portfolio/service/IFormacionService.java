@@ -1,12 +1,18 @@
 package com.agustincollueque.portfolio.service;
 
 import com.agustincollueque.portfolio.model.Formacion;
+import com.agustincollueque.portfolio.model.Usuario;
 import java.util.List;
 
 public interface IFormacionService {
-    Formacion crearFormacion(Formacion form);
+
+    Formacion crearFormacion(Usuario usuario, Formacion form);
+
     void eliminarFormacion(Long id);
-    void modificarFormacion(Formacion form);
+
+    void modificarFormacion(Long id, Formacion form);
+
     Formacion obtenerFormacion(Long id);
-    List<Formacion>obtenerFormaciones();
+
+    List<Formacion> obtenerFormaciones(Long userId);
 }

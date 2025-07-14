@@ -1,6 +1,7 @@
 package com.agustincollueque.portfolio.controller;
 
 import com.agustincollueque.portfolio.model.Usuario;
+import com.agustincollueque.portfolio.security.SecurityUtils;
 import com.agustincollueque.portfolio.service.IUsuarioService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -18,32 +19,33 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/usuarios")
 @RequiredArgsConstructor
 public class UsuarioController {
-    
+
     private final IUsuarioService servUsu;
-       
+    private final SecurityUtils securityUtils;
+
     @GetMapping("/{id}")
     @ResponseBody
     public Usuario obtenerUsuario(@PathVariable Long id) {
         return servUsu.obtenerUsuario(id);
     }
-    
-    @PostMapping("/agregar")
+
+    @GetMapping
+    public List<Usuario> obtenerUsuarios() {
+        return servUsu.obtenerUsuarios(securityUtils.getUser());
+    }
+
+    @PostMapping
     public void agregarUsuario(@RequestBody Usuario usu) {
         servUsu.crearUsuario(usu);
     }
-    
-    @PutMapping("/actualizar")
+
+    @PutMapping
     public void editarUsuario(@RequestBody Usuario usu) {
-        servUsu.modificarUsuario(usu);
+        servUsu.modificarUsuario(securityUtils.getUserId(), usu);
     }
-    
-    @DeleteMapping("/eliminar/{id}")
+
+    @DeleteMapping("/{id}")
     public void eliminarUsuario(@PathVariable Long id) {
-        servUsu.eliminarUsuario(id);
-    }
-    
-    @GetMapping("/")
-    public List<Usuario> verUsuarios() {
-        return servUsu.obtenerUsuarios();
+        servUsu.eliminarUsuario(securityUtils.getUser(), id);
     }
 }

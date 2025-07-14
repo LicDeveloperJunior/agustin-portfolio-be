@@ -1,8 +1,5 @@
 package com.agustincollueque.portfolio.service;
 
-import com.agustincollueque.portfolio.model.Formacion;
-import com.agustincollueque.portfolio.model.Habilidad;
-import com.agustincollueque.portfolio.model.Trabajo;
 import com.agustincollueque.portfolio.model.Usuario;
 import java.util.List;
 import org.springframework.stereotype.Service;
@@ -16,9 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class UsuarioService implements IUsuarioService {
 
     private final UsuarioRepository usuRepo;
-    private final HabilidadService habServ;
-    private final TrabajoService trabServ;
-    private final FormacionService formServ;
 
     @Transactional
     @Override
@@ -28,14 +22,17 @@ public class UsuarioService implements IUsuarioService {
 
     @Transactional
     @Override
-    public void eliminarUsuario(Long id) {
+    public void eliminarUsuario(Usuario admin, Long id) {
+        if (!esSuperAdmin(admin)) {
+            throw new RuntimeException("El usuario no tiene los pemisos"); //Reemplazar por UnauthorizedUserException
+        }
         usuRepo.deleteById(id);
     }
 
     @Transactional
     @Override
-    public void modificarUsuario(Usuario usu) {
-        if (usuRepo.existsById(usu.getId())) {
+    public void modificarUsuario(Long userId, Usuario usu) {
+        if (usuRepo.existsById(userId)) {
             throw new EntityNotFoundException("¡El usuario no existe! No se pudo modificar.");
         }
         usuRepo.save(usu);
@@ -43,35 +40,22 @@ public class UsuarioService implements IUsuarioService {
 
     @Override
     public Usuario obtenerUsuario(Long id) {
-        return usuRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("¡El usuario no existe!"));
+        Usuario user = usuRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("¡El usuario no existe!"));
+        user.getListaFormacion().size();
+        user.getListaHabilidad().size();
+        user.getListaTrabajo().size();
+        return user;
     }
 
     @Override
-    public List<Usuario> obtenerUsuarios() {
+    public List<Usuario> obtenerUsuarios(Usuario admin) {
+        if (!esSuperAdmin(admin)) {
+            throw new RuntimeException("El usuario no tiene los pemisos"); //Reemplazar por UnauthorizedUserException
+        }
         return usuRepo.findAll();
     }
-
-    @Transactional
-    @Override
-    public void agregarHabilidad(Long idUsuario, Habilidad hab) {
-        this.usuRepo.findById(idUsuario)
-                .orElseThrow(() -> new EntityNotFoundException("¡El usuario no existe!"))
-                .getListaHabilidad().add(habServ.crearHabilidad(hab));
-    }
-
-    @Transactional
-    @Override
-    public void agregarTrabajo(Long idUsuario, Trabajo trab) {
-        this.usuRepo.findById(idUsuario)
-                .orElseThrow(() -> new EntityNotFoundException("¡El usuario no existe!"))
-                .getListaTrabajo().add(trabServ.crearTrabajo(trab));
-    }
-
-    @Transactional
-    @Override
-    public void agregarFormacion(Long idUsuario, Formacion form) {
-        this.usuRepo.findById(idUsuario)
-                .orElseThrow(() -> new EntityNotFoundException("¡El usuario no existe!"))
-                .getListaFormacion().add(formServ.crearFormacion(form));
+    
+    private boolean esSuperAdmin(Usuario admin) {
+        return true; //Simula la verificacion de roles y/o permisos
     }
 }

@@ -1,12 +1,18 @@
 package com.agustincollueque.portfolio.service;
 
 import com.agustincollueque.portfolio.model.Habilidad;
+import com.agustincollueque.portfolio.model.Usuario;
 import java.util.List;
 
 public interface IHabilidadService {
-    Habilidad crearHabilidad(Habilidad hab);
+
+    Habilidad crearHabilidad(Usuario usuario, Habilidad hab);
+
     void eliminarHabilidad(Long id);
-    void modificarHabilidad(Habilidad hab);
+
+    void modificarHabilidad(Long id, Habilidad hab);
+
     Habilidad obtenerHabilidad(Long id);
-    List<Habilidad> obtenerHabilidades();
+
+    List<Habilidad> obtenerHabilidades(Long userId);
 }

@@ -1,32 +1,49 @@
 package com.agustincollueque.portfolio.model;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ *
+ * @author Agustin Collueque
+ */
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class Formacion implements Serializable {
+public class Proyecto implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String timeForm;
     private String title;
-    private String link;
-    private String img;
+    private String description;
+    private String linkDemo;
+    private LocalDate creationDate;
+    private String imgSrc;
+    
+    @ManyToMany
+    @JoinTable(
+        name = "skills_projects",
+        joinColumns = @JoinColumn(name = "project_id"),
+        inverseJoinColumns = @JoinColumn(name = "skill_id")
+    )
+    private List<Habilidad> tecnologies;
 
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)

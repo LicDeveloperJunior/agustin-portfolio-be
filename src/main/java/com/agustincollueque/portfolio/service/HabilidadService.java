@@ -1,6 +1,7 @@
 package com.agustincollueque.portfolio.service;
 
 import com.agustincollueque.portfolio.model.Habilidad;
+import com.agustincollueque.portfolio.model.Usuario;
 import com.agustincollueque.portfolio.repository.HabilidadRepository;
 import java.util.List;
 import javax.persistence.EntityNotFoundException;
@@ -16,7 +17,8 @@ public class HabilidadService implements IHabilidadService {
 
     @Transactional
     @Override
-    public Habilidad crearHabilidad(Habilidad hab) {
+    public Habilidad crearHabilidad(Usuario usuario, Habilidad hab) {
+        hab.setUser(usuario);
         return habRepo.save(hab);
     }
 
@@ -28,8 +30,8 @@ public class HabilidadService implements IHabilidadService {
 
     @Transactional
     @Override
-    public void modificarHabilidad(Habilidad hab) {
-        if (!habRepo.existsById(hab.getIdHab())) {
+    public void modificarHabilidad(Long id, Habilidad hab) {
+        if (!habRepo.existsById(id)) {
             throw new EntityNotFoundException("¡La habilidad no existe! No se puede modificar.");
         }
         habRepo.save(hab);
@@ -41,7 +43,7 @@ public class HabilidadService implements IHabilidadService {
     }
 
     @Override
-    public List<Habilidad> obtenerHabilidades() {
-        return habRepo.findAll();
+    public List<Habilidad> obtenerHabilidades(Long userId) {
+        return habRepo.findByUserId(userId);
     }
 }

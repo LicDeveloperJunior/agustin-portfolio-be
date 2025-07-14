@@ -1,6 +1,7 @@
 package com.agustincollueque.portfolio.controller;
 
 import com.agustincollueque.portfolio.model.Habilidad;
+import com.agustincollueque.portfolio.security.SecurityUtils;
 import com.agustincollueque.portfolio.service.IHabilidadService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -14,10 +15,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/habilidad")
+@RequestMapping("/habilidades")
 @RequiredArgsConstructor
 public class HabilidadController {
     private final IHabilidadService servHab;
+    private final SecurityUtils securityUtils;
 
     @GetMapping("/{id}")
     @ResponseBody
@@ -25,22 +27,22 @@ public class HabilidadController {
         return servHab.obtenerHabilidad(id);
     }
 
-    @GetMapping("/")
+    @GetMapping
     public List<Habilidad> obtenerHabilidades() {
-        return servHab.obtenerHabilidades();
+        return servHab.obtenerHabilidades(securityUtils.getUserId());
     }
 
-    @PostMapping("/agregar")
+    @PostMapping
     public void agregarHabilidad(@RequestBody Habilidad hab) {
-        servHab.crearHabilidad(hab);
+        servHab.crearHabilidad(securityUtils.getUser(), hab);
     }
     
-    @PostMapping("/editar")
-    public void editarHabilidad(@RequestBody Habilidad hab) {
-        servHab.modificarHabilidad(hab);
+    @PostMapping("/{id}")
+    public void editarHabilidad(@PathVariable Long id, @RequestBody Habilidad hab) {
+        servHab.modificarHabilidad(id, hab);
     }
 
-    @DeleteMapping("/eliminar/{id}")
+    @DeleteMapping("/{id}")
     public void eliminarHabilidad(@PathVariable("id") Long id) {
         servHab.eliminarHabilidad(id);
     }
