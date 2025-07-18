@@ -22,6 +22,6 @@ public class SecurityUtils {
     
     public Usuario getUser() {
         //Simula la obtención del Usuario en el contexto actual (aún no implementado con Spring Security)
-        return new Usuario();
+        return usuarioService.obtenerUsuario(1L);
     }
 }

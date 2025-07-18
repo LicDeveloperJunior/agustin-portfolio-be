@@ -41,9 +41,6 @@ public class UsuarioService implements IUsuarioService {
     @Override
     public Usuario obtenerUsuario(Long id) {
         Usuario user = usuRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("¡El usuario no existe!"));
-        user.getListaFormacion().size();
-        user.getListaHabilidad().size();
-        user.getListaTrabajo().size();
         return user;
     }
 

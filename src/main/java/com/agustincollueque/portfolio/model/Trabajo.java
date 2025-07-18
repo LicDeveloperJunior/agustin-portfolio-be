@@ -1,5 +1,6 @@
 package com.agustincollueque.portfolio.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
@@ -42,6 +43,7 @@ public class Trabajo implements Serializable {
     )
     private List<Habilidad> tecnologies;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario user;
