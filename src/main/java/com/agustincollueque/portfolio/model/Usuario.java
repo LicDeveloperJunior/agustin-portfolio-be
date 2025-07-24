@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -28,6 +29,7 @@ public class Usuario implements Serializable {
     private String name;
     private String lastName;
     private String birdDate;
+    @Column(columnDefinition = "TEXT")
     private String description;
     private String phone;
     private String email;

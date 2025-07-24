@@ -25,7 +25,9 @@ public class Habilidad implements Serializable {
     private Long id;
 
     private String name;
-    private String logo;
+    private String urlLogo;
+    private String description;
+    private boolean isLearning;
 
     @JsonIgnore
     @ManyToOne

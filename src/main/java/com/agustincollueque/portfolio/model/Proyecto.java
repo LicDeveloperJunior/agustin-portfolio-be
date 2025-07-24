@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -33,10 +34,12 @@ public class Proyecto implements Serializable {
     private Long id;
 
     private String title;
+    @Column(columnDefinition = "TEXT")
     private String description;
-    private String linkDemo;
-    private LocalDate creationDate;
-    private String imgSrc;
+    private String link;
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private String urlImg;
     
     @ManyToMany
     @JoinTable(

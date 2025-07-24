@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -28,12 +29,13 @@ public class Trabajo implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String job;
+    private String title;
+    @Column(columnDefinition = "TEXT")
     private String description;
-    private String linkJob;
-    private LocalDate initialDate;
-    private LocalDate finalDate;
-    private String imgSrc;
+    private String link;
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private String imgUrl;
     
     @ManyToMany
     @JoinTable(
@@ -41,7 +43,7 @@ public class Trabajo implements Serializable {
         joinColumns = @JoinColumn(name = "job_id"),
         inverseJoinColumns = @JoinColumn(name = "skill_id")
     )
-    private List<Habilidad> tecnologies;
+    private List<Habilidad> technologies;
 
     @JsonIgnore
     @ManyToOne
