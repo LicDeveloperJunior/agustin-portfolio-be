@@ -34,3 +34,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Dotenv config
+.env
+.env.*
