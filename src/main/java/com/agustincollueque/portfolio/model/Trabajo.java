@@ -3,7 +3,10 @@ package com.agustincollueque.portfolio.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -36,13 +39,13 @@ public class Trabajo implements Serializable {
     private LocalDate endDate;
     private String urlImg;
     
-    @ManyToMany
+    @ManyToMany(cascade= CascadeType.ALL)
     @JoinTable(
         name = "skills_jobs",
-        joinColumns = @JoinColumn(name = "job_id"),
-        inverseJoinColumns = @JoinColumn(name = "skill_id")
+        joinColumns = @JoinColumn(name = "skill_id"),
+        inverseJoinColumns = @JoinColumn(name = "job_id")
     )
-    private List<Habilidad> technologies;
+    private Set<Habilidad> technologies = new HashSet<>();
 
     @JsonIgnore
     @ManyToOne

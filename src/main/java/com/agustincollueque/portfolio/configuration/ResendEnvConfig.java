@@ -7,15 +7,15 @@ import org.springframework.stereotype.Component;
  *
  * @author Agustin Collueque
  */
-
 @Component
 public class ResendEnvConfig {
 
     private final Dotenv dotenv;
 
     public ResendEnvConfig() {
+        String env = System.getProperty("env", "local");
         dotenv = Dotenv.configure()
-                .ignoreIfMissing()
+                .filename(".env." + env)
                 .load();
     }
 
@@ -31,4 +31,3 @@ public class ResendEnvConfig {
         return dotenv.get("RESEND_TO");
     }
 }
-

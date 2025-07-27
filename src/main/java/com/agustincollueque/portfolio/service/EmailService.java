@@ -15,8 +15,9 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class EmailService implements IEmailService {
+
     private final ResendEnvConfig config;
-    
+
     public EmailService(ResendEnvConfig config) {
         this.config = config;
     }
@@ -32,7 +33,7 @@ public class EmailService implements IEmailService {
             {
               "from": "%s",
               "to": ["%s"],
-              "subject": "Nuevo mensaje de contacto",
+              "subject": "Mensaje enviado desde Portfolio",
               "html": "<p><strong>Nombre:</strong> %s</p><p><strong>Email:</strong> %s</p><p><strong>Mensaje:</strong><br/>%s</p>"
             }
             """.formatted(config.getFrom(), config.getTo(), name, email, message);
@@ -42,4 +43,3 @@ public class EmailService implements IEmailService {
         }
     }
 }
-
