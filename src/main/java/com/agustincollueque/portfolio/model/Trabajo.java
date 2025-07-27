@@ -32,10 +32,9 @@ public class Trabajo implements Serializable {
     private String title;
     @Column(columnDefinition = "TEXT")
     private String description;
-    private String link;
     private LocalDate startDate;
     private LocalDate endDate;
-    private String imgUrl;
+    private String urlImg;
     
     @ManyToMany
     @JoinTable(

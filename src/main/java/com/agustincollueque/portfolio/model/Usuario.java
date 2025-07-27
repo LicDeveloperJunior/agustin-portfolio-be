@@ -28,12 +28,19 @@ public class Usuario implements Serializable {
     private Long id;
     private String name;
     private String lastName;
+    private String title;
+    private String mainPhrase;
+    private String secondaryPhrase;
+    private int yearsXP;
+    @Column(columnDefinition = "TEXT")
+    private String urlImg;
+    @Column(columnDefinition = "TEXT")
+    private String urlCV;
     private String birdDate;
     @Column(columnDefinition = "TEXT")
     private String description;
     private String phone;
     private String email;
-    private String picture;
 
     @JsonIgnore
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -46,4 +53,8 @@ public class Usuario implements Serializable {
     @JsonIgnore
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Trabajo> listaTrabajo;
+    
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Proyecto> projectsList;
 }

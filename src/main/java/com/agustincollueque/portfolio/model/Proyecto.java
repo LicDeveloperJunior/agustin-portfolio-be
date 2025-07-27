@@ -47,7 +47,7 @@ public class Proyecto implements Serializable {
         joinColumns = @JoinColumn(name = "project_id"),
         inverseJoinColumns = @JoinColumn(name = "skill_id")
     )
-    private List<Habilidad> tecnologies;
+    private List<Habilidad> technologies;
 
     @JsonIgnore
     @ManyToOne

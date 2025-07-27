@@ -2,6 +2,7 @@ package com.agustincollueque.portfolio.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -28,6 +29,7 @@ public class Habilidad implements Serializable {
     private String urlLogo;
     private String description;
     private boolean isLearning;
+    private List<SkillType> skills;
 
     @JsonIgnore
     @ManyToOne
