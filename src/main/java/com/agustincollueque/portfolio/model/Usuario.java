@@ -39,7 +39,7 @@ public class Usuario implements Serializable {
     private String birdDate;
     @Column(columnDefinition = "TEXT")
     private String description;
-    private String phone;
+    private String numberPhone;
     private String email;
 
     @JsonIgnore

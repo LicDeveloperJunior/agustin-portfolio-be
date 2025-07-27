@@ -1,5 +1,6 @@
 package com.agustincollueque.portfolio.service;
 
+import com.agustincollueque.portfolio.dto.UserDto;
 import com.agustincollueque.portfolio.model.Usuario;
 import java.util.List;
 
@@ -12,6 +13,8 @@ public interface IUsuarioService {
     void modificarUsuario(Long userId, Usuario usu);
 
     Usuario obtenerUsuario(Long id);
+    
+    UserDto obtenerInfoUsuario(Long id);
 
     List<Usuario> obtenerUsuarios(Usuario user);
 }

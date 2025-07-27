@@ -1,5 +1,6 @@
 package com.agustincollueque.portfolio.controller;
 
+import com.agustincollueque.portfolio.dto.UserDto;
 import com.agustincollueque.portfolio.model.Usuario;
 import com.agustincollueque.portfolio.security.SecurityUtils;
 import com.agustincollueque.portfolio.service.IUsuarioService;
@@ -25,10 +26,16 @@ public class UsuarioController {
     private final IUsuarioService servUsu;
     private final SecurityUtils securityUtils;
 
+    @GetMapping("/{id}/public")
+    @ResponseBody
+    public UserDto obtenerInfoUsuario(@PathVariable Long id) {
+        return servUsu.obtenerInfoUsuario(id);
+    }
+    
     @GetMapping("/{id}")
     @ResponseBody
-    public Usuario obtenerUsuario(@PathVariable Long id) {
-        return servUsu.obtenerUsuario(id);
+    public UserDto obtenerUsuario(@PathVariable Long id) {
+        return servUsu.obtenerInfoUsuario(id);
     }
 
     @GetMapping

@@ -1,9 +1,12 @@
 package com.agustincollueque.portfolio.service;
 
+import com.agustincollueque.portfolio.dto.UserDto;
 import com.agustincollueque.portfolio.model.Usuario;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import com.agustincollueque.portfolio.repository.UsuarioRepository;
+import java.time.LocalDate;
+import java.time.Period;
 import javax.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +16,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class UsuarioService implements IUsuarioService {
 
     private final UsuarioRepository usuRepo;
+    private final TrabajoService trabService;
+    private final HabilidadService habService;
+    private final FormacionService formService;
+    private final ProyectoService proyService;
 
     @Transactional
     @Override
@@ -39,9 +46,36 @@ public class UsuarioService implements IUsuarioService {
     }
 
     @Override
+    public UserDto obtenerInfoUsuario(Long id) {
+        Usuario user = usuRepo.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("¡El usuario no existe!"));
+        LocalDate fechaNacimiento = LocalDate.parse(user.getBirdDate());
+        int edad = Period.between(fechaNacimiento, LocalDate.now()).getYears();
+        UserDto userAux = new UserDto();
+        userAux.setId(id);
+        userAux.setName(user.getName());
+        userAux.setLastName(user.getLastName());
+        userAux.setDescription(user.getDescription());
+        userAux.setEmail(user.getEmail());
+        userAux.setMainPhrase(user.getMainPhrase());
+        userAux.setNumberPhone(user.getNumberPhone());
+        userAux.setSecondaryPhrase(user.getSecondaryPhrase());
+        userAux.setTitle(user.getTitle());
+        userAux.setYearsXP(user.getYearsXP());
+        userAux.setAge(edad);
+        userAux.setUrlImg(user.getUrlImg());
+        userAux.setUrlCV(user.getUrlCV());
+        userAux.setJobs(trabService.obtenerTrabajos(id));
+        userAux.setFormations(formService.obtenerFormaciones(id));
+        userAux.setSkills(habService.obtenerHabilidades(id));
+        userAux.setProjects(proyService.obtenerProyectos(id));
+        return userAux;
+    }
+    
+    @Override
     public Usuario obtenerUsuario(Long id) {
-        Usuario user = usuRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("¡El usuario no existe!"));
-        return user;
+        return usuRepo.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("¡El usuario no existe!"));
     }
 
     @Override
