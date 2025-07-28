@@ -42,7 +42,12 @@ public class Usuario implements Serializable {
     @Column(columnDefinition = "TEXT")
     private String description;
     private String numberPhone;
+    @Column(unique = true, nullable = false)
     private String email;
+    @Column(nullable = false)
+    private String password;
+    @Column(nullable = false)
+    private String role;
 
     @JsonIgnore
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -55,7 +60,7 @@ public class Usuario implements Serializable {
     @JsonIgnore
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Trabajo> listaTrabajo;
-    
+
     @JsonIgnore
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Proyecto> projectsList;
