@@ -31,9 +31,14 @@ public class FormacionService implements IFormacionService {
     @Transactional
     @Override
     public void modificarFormacion(Long id, Formacion form) {
-        if (!formRepo.existsById(id)) {
-            throw new EntityNotFoundException("¡La formacion no existe! No se puede modificar.");
-        }
+        Formacion formAux = formRepo.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("¡La formacion no existe! No se puede modificar."));
+        formAux.setStartDate(form.getStartDate());
+        formAux.setEndDate(form.getEndDate());
+        formAux.setDescription(form.getDescription());
+        formAux.setAcademy(form.getAcademy());
+        formAux.setTitle(form.getTitle());
+        formAux.setType(form.getType());
         formRepo.save(form);
     }
     

@@ -39,7 +39,7 @@ public class UsuarioService implements IUsuarioService {
     @Transactional
     @Override
     public void modificarUsuario(Long userId, Usuario usu) {
-        if (usuRepo.existsById(userId)) {
+        if (!usuRepo.existsById(userId)) {
             throw new EntityNotFoundException("¡El usuario no existe! No se pudo modificar.");
         }
         usuRepo.save(usu);

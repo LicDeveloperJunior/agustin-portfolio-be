@@ -31,10 +31,14 @@ public class TrabajoService implements ITrabajoService {
     @Transactional
     @Override
     public void modificarTrabajo(Long id, Trabajo trab) {
-        if (trabRepo.existsById(id)) {
-            throw new EntityNotFoundException("¡El trabajo no existe! No se pudo modificar.");
-        }
-        trabRepo.save(trab);
+        Trabajo jobAux = trabRepo.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("¡El trabajo no existe! No se pudo modificar."));
+        jobAux.setStartDate(trab.getStartDate());
+        jobAux.setEndDate(trab.getEndDate());
+        jobAux.setDescription(trab.getDescription());
+        jobAux.setTitle(trab.getTitle());
+        jobAux.setUrlImg(trab.getUrlImg());
+        trabRepo.save(jobAux);
     }
     
     @Override

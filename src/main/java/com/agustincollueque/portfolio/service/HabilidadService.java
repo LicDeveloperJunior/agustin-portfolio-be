@@ -31,9 +31,13 @@ public class HabilidadService implements IHabilidadService {
     @Transactional
     @Override
     public void modificarHabilidad(Long id, Habilidad hab) {
-        if (!habRepo.existsById(id)) {
-            throw new EntityNotFoundException("¡La habilidad no existe! No se puede modificar.");
-        }
+        Habilidad skillAux = habRepo.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("¡La habilidad no existe! No se puede modificar."));
+        skillAux.setName(hab.getName());
+        skillAux.setType(hab.getType());
+        skillAux.setLearning(hab.isLearning());
+        skillAux.setSkills(hab.getSkills());
+        skillAux.setUrlLogo(hab.getUrlLogo());
         habRepo.save(hab);
     }
 

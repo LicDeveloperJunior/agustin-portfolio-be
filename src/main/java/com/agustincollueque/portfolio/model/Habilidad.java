@@ -2,12 +2,9 @@ package com.agustincollueque.portfolio.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -35,13 +32,11 @@ public class Habilidad implements Serializable {
 
     private String name;
     private String urlLogo;
-    private String description;
     private boolean isLearning;
-    @ElementCollection(targetClass = SkillType.class)
     @Enumerated(EnumType.STRING)
-    @CollectionTable(name = "skill_skilltypes", joinColumns = @JoinColumn(name = "skill_id"))
-    @Column(name = "skill_type")
-    private List<SkillType> skills = new ArrayList<>();
+    private SkillType type;
+    @Convert(converter = StringListConverter.class)
+    private List<String> skills;
 
     @JsonIgnore
     @ManyToMany(mappedBy = "technologies")

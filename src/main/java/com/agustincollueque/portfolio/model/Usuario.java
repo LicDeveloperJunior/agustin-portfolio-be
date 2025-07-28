@@ -29,7 +29,9 @@ public class Usuario implements Serializable {
     private String name;
     private String lastName;
     private String title;
+    @Column(columnDefinition = "TEXT")
     private String mainPhrase;
+    @Column(columnDefinition = "TEXT")
     private String secondaryPhrase;
     private int yearsXP;
     @Column(columnDefinition = "TEXT")

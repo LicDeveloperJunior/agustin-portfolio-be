@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -40,7 +41,7 @@ public class HabilidadController {
         servHab.crearHabilidad(securityUtils.getUser(), hab);
     }
     
-    @PostMapping("/{id}")
+    @PutMapping("/{id}")
     public void editarHabilidad(@PathVariable Long id, @RequestBody Habilidad hab) {
         servHab.modificarHabilidad(id, hab);
     }
