@@ -1,8 +1,9 @@
 package com.agustincollueque.portfolio.security;
 
 import com.agustincollueque.portfolio.model.Usuario;
-import com.agustincollueque.portfolio.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 /**
@@ -13,15 +14,16 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class SecurityUtils {
 
-    private final UsuarioService usuarioService;
-
-    public Long getUserId() {
-        //Simula la obtencion del ID del contexto actual (aún no implementado con Spring Security)
-        return 1L;
+    public static Long getUserId() {
+        return getUser().getId();
     }
     
-    public Usuario getUser() {
-        //Simula la obtención del Usuario en el contexto actual (aún no implementado con Spring Security)
-        return usuarioService.obtenerUsuario(1L);
+    public static Usuario getUser() {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    if (authentication != null && authentication.getPrincipal() instanceof UserPrincipal) {
+        return ((UserPrincipal) authentication.getPrincipal()).getUsuario();
     }
+    return null;
+}
+
 }
