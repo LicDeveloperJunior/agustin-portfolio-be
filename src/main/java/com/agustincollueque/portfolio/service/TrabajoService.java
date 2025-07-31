@@ -33,16 +33,14 @@ public class TrabajoService implements ITrabajoService {
     @Transactional
     @Override
     public JobDto modificarTrabajo(Long id, JobDto job) {
-        Trabajo jobAux = trabRepo.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Job with ID " + id + " not found."));
+        Trabajo jobAux = getJobById(id);
         loadProjectData(jobAux, job);
         return new JobDto(trabRepo.save(jobAux));
     }
     
     @Override
     public JobDto obtenerTrabajo(Long id) {
-        return new JobDto(trabRepo.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Job with ID " + id + " not found.")));
+        return new JobDto(getJobById(id));
     }
     
     @Override
@@ -68,4 +66,8 @@ public class TrabajoService implements ITrabajoService {
         job.setTechnologies(skillService.getTechnologiesByIds(dto.getTechnologies()));
     }
     
+    private Trabajo getJobById(Long id) {
+        return trabRepo.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Job with ID " + id + " not found."));
+    }
 }

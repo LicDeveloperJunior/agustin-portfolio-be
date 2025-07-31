@@ -35,8 +35,7 @@ public class ProyectoService implements IProyectoService {
 
     @Override
     public ProjectDto modificarProyecto(Long id, ProjectDto proy) {
-        Proyecto projAux = proyRepo.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("¡El proyecto no existe!"));
+        Proyecto projAux = getProjectById(id);
         loadProjectData(projAux, proy);
         return new ProjectDto(proyRepo.save(projAux));
     }
@@ -50,8 +49,7 @@ public class ProyectoService implements IProyectoService {
 
     @Override
     public ProjectDto obtenerProyecto(Long id) {
-        return new ProjectDto(proyRepo.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Project with ID " + id + " not found")));
+        return new ProjectDto(getProjectById(id));
     }
 
     public Proyecto fromDto(ProjectDto dto, Usuario usuario) {
@@ -69,5 +67,10 @@ public class ProyectoService implements IProyectoService {
         proj.setLink(dto.getLink());
         proj.setUrlImg(dto.getUrlImg());
         proj.setTechnologies(skillService.getTechnologiesByIds(dto.getTechnologies()));
+    }
+
+    private Proyecto getProjectById(Long id) {
+        return proyRepo.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Project with ID " + id + " not found."));
     }
 }

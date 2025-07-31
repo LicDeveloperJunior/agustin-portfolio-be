@@ -33,16 +33,14 @@ public class FormacionService implements IFormacionService {
     @Transactional
     @Override
     public FormationDto modificarFormacion(Long id, FormationDto form) {
-        Formacion formAux = formRepo.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Formation with ID " + id + " not found."));
+        Formacion formAux = getFormationById(id);
         loadFormationData(formAux, form);
         return new FormationDto(formRepo.save(formAux));
     }
 
     @Override
     public FormationDto obtenerFormacion(Long id) {
-        return new FormationDto(formRepo.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Formation with ID " + id + " not found.")));
+        return new FormationDto(getFormationById(id));
     }
 
     @Override
@@ -67,5 +65,10 @@ public class FormacionService implements IFormacionService {
         form.setStartDate(dto.getStartDate());
         form.setEndDate(dto.getEndDate());
         form.setTechnologies(habServ.getTechnologiesByIds(dto.getTechnologies()));
+    }
+    
+    private Formacion getFormationById(Long id) {
+        return formRepo.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Formation with ID " + id + " not found."));
     }
 }

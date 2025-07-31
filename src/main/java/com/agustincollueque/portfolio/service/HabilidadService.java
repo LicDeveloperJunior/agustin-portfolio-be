@@ -31,8 +31,7 @@ public class HabilidadService implements IHabilidadService {
     @Transactional
     @Override
     public void eliminarHabilidad(Long id) {
-        Habilidad habilidad = habRepo.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Skill with ID " + id + " not found"));
+        Habilidad habilidad = getSkillById(id);
         for (Proyecto proyecto : habilidad.getProjects()) {
             proyecto.getTechnologies().remove(habilidad);
         }
@@ -52,16 +51,14 @@ public class HabilidadService implements IHabilidadService {
     @Transactional
     @Override
     public SkillDto modificarHabilidad(Long id, SkillDto skillUpdated) {
-        Habilidad skillAux = habRepo.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Skill with ID " + id + " not found."));
+        Habilidad skillAux = getSkillById(id);
         loadSkillData(skillAux, skillUpdated);
         return new SkillDto(habRepo.save(skillAux));
     }
 
     @Override
     public SkillDto obtenerHabilidad(Long id) {
-        return new SkillDto(habRepo.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Skill with ID " + id + " not found!")));
+        return new SkillDto(getSkillById(id));
     }
 
     @Override
@@ -88,5 +85,10 @@ public class HabilidadService implements IHabilidadService {
 
     public Set<Habilidad> getTechnologiesByIds(List<Long> ids) {
         return new HashSet<>(habRepo.findAllById(ids));
+    }
+
+    private Habilidad getSkillById(Long id) {
+        return habRepo.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Skill with ID " + id + " not found"));
     }
 }
