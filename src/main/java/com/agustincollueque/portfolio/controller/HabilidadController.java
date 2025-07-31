@@ -1,6 +1,6 @@
 package com.agustincollueque.portfolio.controller;
 
-import com.agustincollueque.portfolio.model.Habilidad;
+import com.agustincollueque.portfolio.dto.SkillDto;
 import com.agustincollueque.portfolio.security.SecurityUtils;
 import com.agustincollueque.portfolio.service.IHabilidadService;
 import java.util.List;
@@ -26,24 +26,24 @@ public class HabilidadController {
 
     @GetMapping("/{id}")
     @ResponseBody
-    public Habilidad obtenerHabilidad(@PathVariable("id") Long id) {
+    public SkillDto obtenerHabilidad(@PathVariable("id") Long id) {
         return servHab.obtenerHabilidad(id);
     }
 
     @GetMapping
     @ResponseBody
-    public List<Habilidad> obtenerHabilidades() {
+    public List<SkillDto> obtenerHabilidades() {
         return servHab.obtenerHabilidades(securityUtils.getUserId());
     }
 
     @PostMapping
-    public void agregarHabilidad(@RequestBody Habilidad hab) {
-        servHab.crearHabilidad(securityUtils.getUser(), hab);
+    public SkillDto agregarHabilidad(@RequestBody SkillDto hab) {
+        return servHab.crearHabilidad(securityUtils.getUser(), hab);
     }
     
     @PutMapping("/{id}")
-    public void editarHabilidad(@PathVariable Long id, @RequestBody Habilidad hab) {
-        servHab.modificarHabilidad(id, hab);
+    public SkillDto editarHabilidad(@PathVariable Long id, @RequestBody SkillDto hab) {
+        return servHab.modificarHabilidad(id, hab);
     }
 
     @DeleteMapping("/{id}")

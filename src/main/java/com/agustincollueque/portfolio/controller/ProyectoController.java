@@ -1,6 +1,6 @@
 package com.agustincollueque.portfolio.controller;
 
-import com.agustincollueque.portfolio.model.Proyecto;
+import com.agustincollueque.portfolio.dto.ProjectDto;
 import com.agustincollueque.portfolio.security.SecurityUtils;
 import com.agustincollueque.portfolio.service.IProyectoService;
 import java.util.List;
@@ -31,24 +31,24 @@ public class ProyectoController {
 
     @GetMapping("/{id}")
     @ResponseBody
-    public Proyecto obtenerProyecto(@PathVariable("id") Long id) {
+    public ProjectDto obtenerProyecto(@PathVariable("id") Long id) {
         return servProy.obtenerProyecto(id);
     }
     
     @GetMapping
     @ResponseBody
-    public List<Proyecto> obtenerProyectos() {
+    public List<ProjectDto> obtenerProyectos() {
         return servProy.obtenerProyectos(securityUtils.getUserId());
     }
 
     @PostMapping
-    public void agregarProyecto(@RequestBody Proyecto proy) {
-        servProy.crearProyecto(securityUtils.getUser(), proy);
+    public ProjectDto agregarProyecto(@RequestBody ProjectDto proy) {
+        return servProy.crearProyecto(securityUtils.getUser(), proy);
     }
 
     @PutMapping("/{id}")
-    public void editarProyecto(@PathVariable Long id, @RequestBody Proyecto proy) {
-        servProy.modificarProyecto(id, proy);
+    public ProjectDto editarProyecto(@PathVariable Long id, @RequestBody ProjectDto proy) {
+        return servProy.modificarProyecto(id, proy);
     }
 
     @DeleteMapping("/{id}")

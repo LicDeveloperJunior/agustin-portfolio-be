@@ -1,6 +1,6 @@
 package com.agustincollueque.portfolio.controller;
 
-import com.agustincollueque.portfolio.model.Formacion;
+import com.agustincollueque.portfolio.dto.FormationDto;
 import com.agustincollueque.portfolio.security.SecurityUtils;
 import com.agustincollueque.portfolio.service.IFormacionService;
 import java.util.List;
@@ -27,24 +27,24 @@ public class FormacionController {
 
     @GetMapping
     @ResponseBody
-    public List<Formacion> obtenerFormaciones() {
+    public List<FormationDto> obtenerFormaciones() {
         return servForm.obtenerFormaciones(securityUtils.getUserId());
     }
 
     @GetMapping("/{id}")
     @ResponseBody
-    public Formacion obtenerFormacion(@PathVariable("id") Long id) {
+    public FormationDto obtenerFormacion(@PathVariable("id") Long id) {
         return servForm.obtenerFormacion(id);
     }
 
     @PostMapping
-    public void crearFormacion(@RequestBody Formacion form) {
-        servForm.crearFormacion(securityUtils.getUser(), form);
+    public FormationDto crearFormacion(@RequestBody FormationDto form) {
+        return servForm.crearFormacion(securityUtils.getUser(), form);
     }
 
     @PutMapping("/{id}")
-    public void editarFormacion(@PathVariable Long id, @RequestBody Formacion form) {
-        servForm.modificarFormacion(id, form);
+    public FormationDto editarFormacion(@PathVariable Long id, @RequestBody FormationDto form) {
+        return servForm.modificarFormacion(id, form);
     }
 
     @DeleteMapping("/{id}")

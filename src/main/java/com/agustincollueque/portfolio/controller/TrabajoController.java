@@ -1,6 +1,6 @@
 package com.agustincollueque.portfolio.controller;
 
-import com.agustincollueque.portfolio.model.Trabajo;
+import com.agustincollueque.portfolio.dto.JobDto;
 import com.agustincollueque.portfolio.security.SecurityUtils;
 import com.agustincollueque.portfolio.service.ITrabajoService;
 import java.util.List;
@@ -27,23 +27,23 @@ public class TrabajoController {
 
     @GetMapping
     @ResponseBody
-    public List<Trabajo> obtenerTrabajos() {
+    public List<JobDto> obtenerTrabajos() {
         return servTrab.obtenerTrabajos(securityUtils.getUserId());
     }
 
     @GetMapping("/{id}")
-    public Trabajo obtenerTrabajo(@PathVariable("id") Long id) {
+    public JobDto obtenerTrabajo(@PathVariable("id") Long id) {
         return servTrab.obtenerTrabajo(id);
     }
 
     @PostMapping
-    public void agregarTrabajo(@RequestBody Trabajo trab) {
-        servTrab.crearTrabajo(securityUtils.getUser(), trab);
+    public JobDto agregarTrabajo(@RequestBody JobDto trab) {
+        return servTrab.crearTrabajo(securityUtils.getUser(), trab);
     }
 
     @PutMapping("/{id}")
-    public void editarTrabajo(@PathVariable Long id, @RequestBody Trabajo trab) {
-        servTrab.modificarTrabajo(id, trab);
+    public JobDto editarTrabajo(@PathVariable Long id, @RequestBody JobDto trab) {
+        return servTrab.modificarTrabajo(id, trab);
     }
 
     @DeleteMapping("/{id}")

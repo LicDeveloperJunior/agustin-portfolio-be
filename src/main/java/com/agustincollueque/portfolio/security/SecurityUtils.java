@@ -14,11 +14,11 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class SecurityUtils {
 
-    public static Long getUserId() {
+    public Long getUserId() {
         return getUser().getId();
     }
     
-    public static Usuario getUser() {
+    public Usuario getUser() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     if (authentication != null && authentication.getPrincipal() instanceof UserPrincipal) {
         return ((UserPrincipal) authentication.getPrincipal()).getUsuario();
