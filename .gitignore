@@ -1,23 +1,35 @@
-### Application Properties ###
+### Archivos de configuración sensibles ###
+.env
+.env.*
 src/main/resources/application.properties
+src/main/resources/application-local.properties
+src/main/resources/application-dev.properties
+src/main/resources/application-prod.properties
 
+### Java / Maven / Gradle ###
 HELP.md
 target/
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+build/
+*.class
+*.jar
+*.war
+*.log
 
-### STS ###
+### Maven Wrapper ###
+.mvn/
+.mvn/wrapper/maven-wrapper.jar
+
+### Spring Tool Suite (STS) ###
 .apt_generated
 .classpath
 .factorypath
 .project
-.settings
+.settings/
 .springBeans
-.sts4-cache
+.sts4-cache/
 
 ### IntelliJ IDEA ###
-.idea
+.idea/
 *.iws
 *.iml
 *.ipr
@@ -28,13 +40,6 @@ target/
 /dist/
 /nbdist/
 /.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
 
 ### VS Code ###
 .vscode/
-
-# Dotenv config
-.env
-.env.*
