@@ -2,16 +2,12 @@ package com.agustincollueque.portfolio.controller;
 
 import com.agustincollueque.portfolio.dto.LoginDto;
 import com.agustincollueque.portfolio.dto.LoginResponse;
-import com.agustincollueque.portfolio.model.Usuario;
 import com.agustincollueque.portfolio.security.JwtUtil;
+import com.agustincollueque.portfolio.security.service.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,22 +23,22 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:4200")
 public class AuthController {
-    private final AuthenticationManager authenticationManager;
+
     private final JwtUtil jwtUtil;
-    private final UserDetailsService userDetailsService;
+    private final UserDetailsServiceImpl userDetailsService;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginDto request) {
+        System.out.println("Entre al login -> " + request.getEmail() + " - " + request.getPassword());
         try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
-            );
+            final UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
+            System.out.println("USER DETAIL -> "+userDetails.getUsername());
+            final String jwt = jwtUtil.generateToken(userDetails.getUsername());
+            System.out.println(jwt);
+            return ResponseEntity.ok(new LoginResponse(jwt));
         } catch (Exception e) {
+            System.out.println("ERROR -> "+e.getMessage());
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales inválidas");
         }
-
-        final UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
-        final String jwt = jwtUtil.generateToken(userDetails.getUsername());
-        return ResponseEntity.ok(new LoginResponse(jwt));
     }
 }
