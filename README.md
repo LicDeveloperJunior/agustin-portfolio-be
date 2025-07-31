@@ -2,7 +2,6 @@
 
 ## 📁 `README.md` para el **backend (Spring Boot 2.7.4)**
 
-```markdown
 # 🧑‍💻 Agustín Portfolio - Backend
 
 Este es el backend de mi portfolio personal, desarrollado con **Spring Boot 2.7.4**. Expone una API REST que gestiona autenticación, envío de mails y CRUDs para proyectos, experiencia, tecnologías, etc.
