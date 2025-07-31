@@ -1,5 +1,6 @@
 package com.agustincollueque.portfolio.service;
 
+import com.agustincollueque.portfolio.dto.SkillDto;
 import com.agustincollueque.portfolio.model.Habilidad;
 import com.agustincollueque.portfolio.model.Usuario;
 import com.agustincollueque.portfolio.repository.HabilidadRepository;
@@ -17,7 +18,7 @@ public class HabilidadService implements IHabilidadService {
 
     @Transactional
     @Override
-    public Habilidad crearHabilidad(Usuario usuario, Habilidad hab) {
+    public SkillDto crearHabilidad(Usuario usuario, Habilidad hab) {
         hab.setUser(usuario);
         return habRepo.save(hab);
     }

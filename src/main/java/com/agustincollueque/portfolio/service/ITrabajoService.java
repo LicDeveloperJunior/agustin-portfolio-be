@@ -1,18 +1,18 @@
 package com.agustincollueque.portfolio.service;
 
-import com.agustincollueque.portfolio.model.Trabajo;
+import com.agustincollueque.portfolio.dto.JobDto;
 import com.agustincollueque.portfolio.model.Usuario;
 import java.util.List;
 
 public interface ITrabajoService {
 
-    Trabajo crearTrabajo(Usuario usuario, Trabajo trab);
+    JobDto crearTrabajo(Usuario usuario, JobDto trab);
 
     void eliminarTrabajo(Long id);
 
-    void modificarTrabajo(Long id, Trabajo trab);
+    JobDto modificarTrabajo(Long id, JobDto trab);
 
-    Trabajo obtenerTrabajo(Long id);
+    JobDto obtenerTrabajo(Long id);
 
-    List<Trabajo> obtenerTrabajos(Long userId);
+    List<JobDto> obtenerTrabajos(Long userId);
 }

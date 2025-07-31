@@ -1,6 +1,6 @@
 package com.agustincollueque.portfolio.service;
 
-import com.agustincollueque.portfolio.model.Proyecto;
+import com.agustincollueque.portfolio.dto.ProjectDto;
 import com.agustincollueque.portfolio.model.Usuario;
 import java.util.List;
 
@@ -10,13 +10,13 @@ import java.util.List;
  */
 public interface IProyectoService {
 
-    Proyecto crearProyecto(Usuario usuario, Proyecto proy);
+    ProjectDto crearProyecto(Usuario usuario, ProjectDto proy);
 
     void eliminarProyecto(Long id);
 
-    void modificarProyecto(Long id, Proyecto proy);
+    ProjectDto modificarProyecto(Long id, ProjectDto proy);
 
-    Proyecto obtenerProyecto(Long id);
+    ProjectDto obtenerProyecto(Long id);
 
-    List<Proyecto> obtenerProyectos(Long userId);
+    List<ProjectDto> obtenerProyectos(Long userId);
 }
