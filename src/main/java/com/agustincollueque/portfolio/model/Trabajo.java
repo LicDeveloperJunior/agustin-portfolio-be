@@ -4,9 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -39,7 +37,7 @@ public class Trabajo implements Serializable {
     private LocalDate endDate;
     private String urlImg;
     
-    @ManyToMany(cascade= CascadeType.ALL)
+    @ManyToMany
     @JoinTable(
         name = "skills_jobs",
         joinColumns = @JoinColumn(name = "skill_id"),

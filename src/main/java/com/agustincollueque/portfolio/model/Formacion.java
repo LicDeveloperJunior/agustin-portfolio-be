@@ -5,7 +5,6 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -39,7 +38,7 @@ public class Formacion implements Serializable {
     private TipoFormacion type;
     private String academy;
     
-    @ManyToMany(cascade= CascadeType.ALL)
+    @ManyToMany
     @JoinTable(
         name = "skills_formations",
         joinColumns = @JoinColumn(name = "skill_id"),

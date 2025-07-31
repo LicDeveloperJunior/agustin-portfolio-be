@@ -5,7 +5,6 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -43,7 +42,7 @@ public class Proyecto implements Serializable {
     private LocalDate endDate;
     private String urlImg;
     
-    @ManyToMany(cascade= CascadeType.ALL)
+    @ManyToMany
     @JoinTable(
         name = "skills_projects",
         joinColumns = @JoinColumn(name = "skill_id"),
