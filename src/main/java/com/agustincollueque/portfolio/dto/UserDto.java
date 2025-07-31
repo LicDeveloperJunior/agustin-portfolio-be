@@ -1,9 +1,5 @@
 package com.agustincollueque.portfolio.dto;
 
-import com.agustincollueque.portfolio.model.Formacion;
-import com.agustincollueque.portfolio.model.Habilidad;
-import com.agustincollueque.portfolio.model.Proyecto;
-import com.agustincollueque.portfolio.model.Trabajo;
 import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,8 +26,8 @@ public class UserDto {
     private String numberPhone;
     private String email;
     
-    private List<Formacion> formations;
-    private List<Trabajo> jobs;
-    private List<Habilidad> skills;
-    private List<Proyecto> projects;
+    private List<FormationDto> formations;
+    private List<JobDto> jobs;
+    private List<SkillDto> skills;
+    private List<ProjectDto> projects;
 }

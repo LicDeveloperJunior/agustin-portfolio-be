@@ -4,7 +4,10 @@ import com.agustincollueque.portfolio.dto.SkillDto;
 import com.agustincollueque.portfolio.model.Habilidad;
 import com.agustincollueque.portfolio.model.Usuario;
 import com.agustincollueque.portfolio.repository.HabilidadRepository;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import javax.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,9 +21,8 @@ public class HabilidadService implements IHabilidadService {
 
     @Transactional
     @Override
-    public SkillDto crearHabilidad(Usuario usuario, Habilidad hab) {
-        hab.setUser(usuario);
-        return habRepo.save(hab);
+    public SkillDto crearHabilidad(Usuario usuario, SkillDto skill) {
+        return new SkillDto(habRepo.save(fromDto(skill, usuario)));
     }
 
     @Transactional
@@ -31,24 +33,42 @@ public class HabilidadService implements IHabilidadService {
 
     @Transactional
     @Override
-    public void modificarHabilidad(Long id, Habilidad hab) {
+    public SkillDto modificarHabilidad(Long id, SkillDto skillUpdated) {
         Habilidad skillAux = habRepo.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("¡La habilidad no existe! No se puede modificar."));
-        skillAux.setName(hab.getName());
-        skillAux.setType(hab.getType());
-        skillAux.setLearning(hab.isLearning());
-        skillAux.setSkills(hab.getSkills());
-        skillAux.setUrlLogo(hab.getUrlLogo());
-        habRepo.save(hab);
+                .orElseThrow(() -> new EntityNotFoundException("Skill with ID " + id + " not found."));
+        loadSkillData(skillAux, skillUpdated);
+        return new SkillDto(habRepo.save(skillAux));
     }
 
     @Override
-    public Habilidad obtenerHabilidad(Long id) {
-        return habRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("¡La habilidad no existe!"));
+    public SkillDto obtenerHabilidad(Long id) {
+        return new SkillDto(habRepo.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Skill with ID " + id + " not found!")));
     }
 
     @Override
-    public List<Habilidad> obtenerHabilidades(Long userId) {
-        return habRepo.findByUserId(userId);
+    public List<SkillDto> obtenerHabilidades(Long userId) {
+        return habRepo.findByUserId(userId).stream()
+                .map(SkillDto::new)
+                .collect(Collectors.toList());
+    }
+
+    public Habilidad fromDto(SkillDto dto, Usuario usuario) {
+        Habilidad skill = new Habilidad();
+        loadSkillData(skill, dto);
+        skill.setUser(usuario);
+        return skill;
+    }
+
+    private void loadSkillData(Habilidad skill, SkillDto dto) {
+        skill.setName(dto.getName());
+        skill.setUrlLogo(dto.getUrlLogo());
+        skill.setLearning(dto.isLearning());
+        skill.setType(dto.getType());
+        skill.setSkills(dto.getSkills());
+    }
+
+    public Set<Habilidad> getTechnologiesByIds(List<Long> ids) {
+        return new HashSet<>(habRepo.findAllById(ids));
     }
 }

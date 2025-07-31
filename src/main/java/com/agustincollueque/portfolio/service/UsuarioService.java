@@ -31,7 +31,7 @@ public class UsuarioService implements IUsuarioService {
     @Override
     public void eliminarUsuario(Usuario admin, Long id) {
         if (!esSuperAdmin(admin)) {
-            throw new RuntimeException("El usuario no tiene los pemisos"); //Reemplazar por UnauthorizedUserException
+            throw new RuntimeException("Unauthorized user");
         }
         usuRepo.deleteById(id);
     }
@@ -40,7 +40,7 @@ public class UsuarioService implements IUsuarioService {
     @Override
     public void modificarUsuario(Long userId, Usuario usu) {
         if (!usuRepo.existsById(userId)) {
-            throw new EntityNotFoundException("¡El usuario no existe! No se pudo modificar.");
+            throw new EntityNotFoundException("User with " + userId + " not found.");
         }
         usuRepo.save(usu);
     }
@@ -48,7 +48,7 @@ public class UsuarioService implements IUsuarioService {
     @Override
     public UserDto obtenerInfoUsuario(Long id) {
         Usuario user = usuRepo.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("¡El usuario no existe!"));
+                .orElseThrow(() -> new EntityNotFoundException("User with ID " + id + " not found"));
         LocalDate fechaNacimiento = LocalDate.parse(user.getBirdDate());
         int edad = Period.between(fechaNacimiento, LocalDate.now()).getYears();
         UserDto userAux = new UserDto();
@@ -71,22 +71,22 @@ public class UsuarioService implements IUsuarioService {
         userAux.setProjects(proyService.obtenerProyectos(id));
         return userAux;
     }
-    
+
     @Override
     public Usuario obtenerUsuario(Long id) {
         return usuRepo.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("¡El usuario no existe!"));
+                .orElseThrow(() -> new EntityNotFoundException("User with ID " + id + " not found."));
     }
 
     @Override
     public List<Usuario> obtenerUsuarios(Usuario admin) {
         if (!esSuperAdmin(admin)) {
-            throw new RuntimeException("El usuario no tiene los pemisos"); //Reemplazar por UnauthorizedUserException
+            throw new RuntimeException("Unauthorized user");
         }
         return usuRepo.findAll();
     }
-    
+
     private boolean esSuperAdmin(Usuario admin) {
-        return true; //Simula la verificacion de roles y/o permisos
+        return admin.getRole().equalsIgnoreCase("ADMIN");
     }
 }
