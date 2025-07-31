@@ -1,7 +1,10 @@
 package com.agustincollueque.portfolio.service;
 
 import com.agustincollueque.portfolio.dto.SkillDto;
+import com.agustincollueque.portfolio.model.Formacion;
 import com.agustincollueque.portfolio.model.Habilidad;
+import com.agustincollueque.portfolio.model.Proyecto;
+import com.agustincollueque.portfolio.model.Trabajo;
 import com.agustincollueque.portfolio.model.Usuario;
 import com.agustincollueque.portfolio.repository.HabilidadRepository;
 import java.util.HashSet;
@@ -28,7 +31,22 @@ public class HabilidadService implements IHabilidadService {
     @Transactional
     @Override
     public void eliminarHabilidad(Long id) {
-        habRepo.deleteById(id);
+        Habilidad habilidad = habRepo.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Skill with ID " + id + " not found"));
+        for (Proyecto proyecto : habilidad.getProjects()) {
+            proyecto.getTechnologies().remove(habilidad);
+        }
+        for (Trabajo trabajo : habilidad.getJobs()) {
+            trabajo.getTechnologies().remove(habilidad);
+        }
+        for (Formacion formacion : habilidad.getFormations()) {
+            formacion.getTechnologies().remove(habilidad);
+        }
+        habilidad.getProjects().clear();
+        habilidad.getJobs().clear();
+        habilidad.getFormations().clear();
+
+        habRepo.delete(habilidad);
     }
 
     @Transactional
