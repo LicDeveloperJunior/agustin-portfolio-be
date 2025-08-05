@@ -87,6 +87,6 @@ public class UsuarioService implements IUsuarioService {
     }
 
     private boolean esSuperAdmin(Usuario admin) {
-        return admin.getRole().equalsIgnoreCase("ADMIN");
+        return admin.getRoles().stream().anyMatch(r -> r.getNombre().equals("ADMIN"));
     }
 }

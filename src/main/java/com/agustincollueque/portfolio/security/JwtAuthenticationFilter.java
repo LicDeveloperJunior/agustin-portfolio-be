@@ -19,7 +19,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
  * @author Agustin Collueque
  */
 @Component
-public class JwtFilter extends OncePerRequestFilter {
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -33,17 +33,14 @@ public class JwtFilter extends OncePerRequestFilter {
                                     FilterChain chain) throws ServletException, IOException {
         final String authHeader = request.getHeader("Authorization");
 
-        String email = null;
-        String jwt = null;
-
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            jwt = authHeader.substring(7);
-            try {
-                email = jwtUtil.extractEmail(jwt);
-            } catch (Exception e) {
-                // token inválido
-            }
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+                chain.doFilter(request, response);
+                return;
+            
         }
+        
+        String email = jwtUtil.extractEmail(authHeader);
+        String jwt = authHeader.substring(7);
 
         if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userDetailsService.loadUserByUsername(email);
