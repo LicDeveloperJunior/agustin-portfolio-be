@@ -1,33 +1,35 @@
 package com.agustincollueque.portfolio.configuration;
 
-import io.github.cdimascio.dotenv.Dotenv;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
  *
  * @author Agustin Collueque
  */
+
 @Component
 public class ResendEnvConfig {
 
-    private final Dotenv dotenv;
+    @Value("${resend.api.key}")
+    private String apiKey;
 
-    public ResendEnvConfig() {
-        String env = System.getProperty("env", "local");
-        dotenv = Dotenv.configure()
-                .filename(".env." + env)
-                .load();
-    }
+    @Value("${resend.from}")
+    private String from;
+
+    @Value("${resend.to}")
+    private String to;
 
     public String getApiKey() {
-        return dotenv.get("RESEND_API_KEY");
+        return apiKey;
     }
 
     public String getFrom() {
-        return dotenv.get("RESEND_FROM");
+        return from;
     }
 
     public String getTo() {
-        return dotenv.get("RESEND_TO");
+        return to;
     }
 }
+
